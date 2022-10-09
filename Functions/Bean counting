@@ -1,0 +1,17 @@
+function countChar(str,name){
+  let kol=0;
+  for(let n=0;n<=str.length;n++)
+    if(str[n]==name)
+      kol++;
+  return kol;
+}
+function countBs(str){
+	return countChar(str,"B");
+}
+console.log(countBs("BBC"));
+// → 2
+console.log(countChar("kakkerlak", "k"));
+// → 4
+/*
+Подсчитывать количество определенных букв в слове
+*/
