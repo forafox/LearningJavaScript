@@ -36,4 +36,46 @@ function buildGraph(edges) {
     return graph;
   }
   
-  console.log(roadGraph);
+const roadGraph=buildGraph(roads);
+
+
+  //Класс определяющий текущее местоположение робота
+  //parcel - посылка . destination - пункт назначения
+  class VillageState {
+    constructor(place, parcels) {
+      this.place = place;
+      this.parcels = parcels;
+    }
+  
+    move(destination) {
+        // существует ли дорога из текущего места.
+      if (!roadGraph[this.place].includes(destination)) {
+        return this;// Если нет, возращаем текущее состояние
+      } else {
+        //Создаем новое состояние с пунктом назначения в качестве стартовой точки
+        let parcels = this.parcels.map(p => {
+            //если посылка не относится к текущему месту, то вернем ее
+          if (p.place != this.place) return p;
+          //иначе вернем Текущий адрес -> Текущее место
+          //необходимый адрес -> в необходимый адресы
+          return {place: destination, address: p.address};
+        }).filter(p => p.place != p.address);
+        //если посылка  находится по текущему адресу, то убираем ее
+        return new VillageState(destination, parcels);
+      }
+    }
+  }
+
+  //выберем стартовую точку
+  let first = new VillageState(
+    "Post Office",
+    [{place: "Post Office", address: "Alice's House"}]
+  );
+  let next = first.move("Alice's House");
+  
+  console.log(next.place);
+  // → Alice's House
+  console.log(next.parcels);
+  // → []
+  console.log(first.place);
+  // → Post Office
